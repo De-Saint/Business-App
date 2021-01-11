@@ -1,0 +1,62 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">Business Permissions</h4>
+                        </li>
+                        <li class="breadcrumb-item bcrumb-1">
+                            <a routerLink="/business/businesses">
+                                <i class="fas fa-home"></i> Business</a>
+                        </li>
+                        <li class="breadcrumb-item active">Permissions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Widgets -->
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="">
+                    <div class="col-md-12 mt-3" style="text-align: center;">
+                        <h5>Hi, <span class="text-capitalize">{{business?.name}} </span></h5>
+                        <p class="mb-0">Your are currently signed on as <span class="text-capitalize"> {{ myDetails?.first_name }} {{ myDetails?.last_name }} ({{role?.name}})</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Widgets -->
+
+        <div class="row clearfix mt-4">
+            <div class="col-lg-12 col-md-12">
+                <div class="success-alert d-none"> </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="header bg-green ">
+                        <div class="row justify-content-center">
+                            <h2>
+                                What you can access
+                            </h2>
+                        </div>
+                        
+                    </div>
+                    <div class="body">
+                        <ul class="to-do-list ui-sortable mb-0" style="min-height: 0px !important;">
+                            <li class="clearfix" *ngFor="let permission of groupPermissions">
+                                <div class="form-check mb-0 col-lg-4 col-md-6 col-sm-12">
+                                    <i class="fa fa-arrow-alt-circle-right m-r-20"></i>
+                                    <span>{{ permission.name }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

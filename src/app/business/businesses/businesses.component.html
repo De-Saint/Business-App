@@ -1,0 +1,322 @@
+<section class="" style="margin-top: 5rem;">
+  <div class="container">
+
+    <div class="row clearfix justify-content-center">
+      <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10 mt-4">
+        <div class="card">
+          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 mt-3">
+            <div class="button-demo mt-3 pb-4" *ngIf="MyBusinesses.length > 0">
+              <span class="font-18 font-bold">Select Business</span>
+              <button type="button" class="btn btn-outline-info pull-right" data-toggle="modal"
+                data-target=".bd-example-modal-lg"><i class="fas fa-plus mr-1"></i> Add New
+                Business</button>
+            </div>
+            <hr>
+
+            <div class="mt-1" *ngIf="MyBusinesses.length < 1">
+              <div class="row text-center justify-content-center p-5">
+                <h4 class="mr-5 mt-3">You do not have any business yet</h4>
+                <button type="button" class="btn btn-info btn-lg mt-3" data-toggle="modal"
+                  data-target=".bd-example-modal-lg">
+                  <i class="fas fa-plus mr-1"></i> Add a Business
+                </button>
+              </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="MyBusinesses.length > 0">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" *ngFor="let business of MyBusinesses">
+                    <div class="card mb-4 m-t-5" (click)="onOpen(business)"
+                      style="border-radius: 0px !important; box-shadow: none !important; border: thin solid #D3D3D3 !important; border-width: 1px !important; cursor: pointer;">
+                      <div class="header2 bg-blue-grey m-t-15 m-l-15 m-r-15">
+
+                      </div>
+                      <div class="body">
+                        <div class="media mt-1 mb-1">
+                          <div class="media-left">
+                            <a href="#">
+                              <img class="media-object" src="assets/images/media.png" alt="" width="50" height="50">
+                            </a>
+                          </div>
+                          <div class="media-body ml-2">
+                            <h6 class="mt-2 mb-0 font-bold">{{business.organization?.name}}</h6>
+                            <div class="mt-1">
+                              <span class="">{{business.staffcount}} Staff |</span>
+                              <span class=""> {{business.rolecount}} Role(s) |</span>
+                              <span class=""> {{business.permcount}} Permission(s)</span>
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!--Start New Business Modal-->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true" id="createBusinessModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mt-3 mb-3 ml-3" id="myLargeModalLabel">List Your Business Organization on The WealthMarket
+        </h5>
+        <button type="button" class="close mt-2 mb-3 mr-2" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <aw-wizard #wizard [navBarLayout]="'large-empty-symbols'">
+          <aw-wizard-step [stepTitle]="'Business Details'">
+            <ng-template awWizardStepSymbol><i class="fa fa-info-circle"></i>
+            </ng-template>
+            <div class="centered-content mt-2">
+              <div>
+                <form #firstForm="ngForm">
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select Organization Type
+                        </mat-label>
+                        <mat-select required>
+                          <mat-option *ngFor="let type of organizationTypes" (click)="setOrganizationType(type)"
+                            [value]="'type.name'">
+                            {{type.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>business</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2" *ngIf="organizationType != '' ">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select Corporate Organization Type
+                        </mat-label>
+                        <mat-select required>
+                          <mat-option *ngFor="let type of corporateTypes" (click)="setCorporateType(type.id)"
+                            [value]="'type.name'">
+                            {{type.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>business</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select Business Industry
+                        </mat-label>
+                        <mat-select required>
+                          <mat-option *ngFor="let sector of sectors" (click)="getSectorBusinessTypes(sector.id)"
+                            [value]="'sector.name'">
+                            {{sector.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>business</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select Business Type
+                        </mat-label>
+                        <mat-select required>
+                          <mat-option *ngFor="let type of businessTypes" [value]="'type.name'"
+                            (click)="setBusinessType(type.id)" class="text-capitalize">
+                            {{type.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>loop</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select Seller Group
+                        </mat-label>
+                        <mat-select required>
+                          <mat-option *ngFor="let group of sellerGroups" [value]="'type.name'"
+                            (click)="setSellerGroup(group.id)" class="text-capitalize">
+                            {{group.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>loop</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select Seller Sub Group
+                        </mat-label>
+                        <mat-select required>
+                          <mat-option *ngFor="let subgroup of sellerSubGroups" [value]="'type.name'"
+                            (click)="setSellerSubGroup(subgroup.id)" class="text-capitalize">
+                            {{subgroup.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>loop</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Business Name</mat-label>
+                        <input matInput type="text" name="businessname" [(ngModel)]="business.name"
+                          #businessname="ngModel" placeholder="Business Name" required>
+                        <mat-icon matSuffix>add</mat-icon>
+                        <mat-error *ngIf="!businessname.valid && (businessname.dirty || businessname.touched)">
+                          Invalid Business Name
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="text-right button-demo">
+                <button class="btn btn-info btn-border-radius waves-effect" [disabled]="!firstForm.valid"
+                  awNextStep>Next</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step [stepTitle]="'Business Contact Details'">
+            <ng-template awWizardStepSymbol><i class="fa fa-money-check-alt"></i>
+            </ng-template>
+            <div class="centered-content">
+              <div>
+                <form #secondForm="ngForm">
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Date Founded</mat-label>
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="business.date_founded" name="created_date"
+                          #created_date="ngModel">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>CAC Number</mat-label>
+                        <input matInput type="number" name="cacnumber" [(ngModel)]="business.cac_number"
+                          #cacnumber="ngModel" placeholder="12121212">
+                        <mat-icon matSuffix>format_list_numbered
+                        </mat-icon>
+                        <!-- <mat-error *ngIf="!cacnumber.valid && (cacnumber.dirty || cacnumber.touched)">
+                                                Enter CAC Number
+                                            </mat-error> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Business Email</mat-label>
+                        <input matInput type="email" name="email" [(ngModel)]="business.email" #email="ngModel"
+                          placeholder="Business Email" required>
+                        <mat-icon matSuffix>email
+                        </mat-icon>
+                        <mat-error *ngIf="!email.valid && (email.dirty || email.touched)">
+                          Input Valid Email
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float mb-2">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput name="phonenumber" [(ngModel)]="business.phone" #phonenumber="ngModel" required
+                          placeholder="EX: (807) 745 2398" prefix="+234 " mask="(000) 000 0000" />
+                        <mat-icon matSuffix>format_list_numbered
+                        </mat-icon>
+                        <mat-error *ngIf="!phonenumber.valid && (phonenumber.dirty || phonenumber.touched)">
+                          Enter Complete Number
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Website Address</mat-label>
+                        <input matInput type="text" name="website" [(ngModel)]="business.website_link"
+                          #website="ngModel" placeholder="https://example.com">
+                        <mat-icon matSuffix>language
+                        </mat-icon>
+                        <!-- <mat-error *ngIf="!website.valid && (website.dirty || website.touched)">
+                                                Enter your Web address
+                                            </mat-error> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="text-right button-demo">
+                <button class="btn btn-danger btn-border-radius waves-effect" awPreviousStep>Previous</button>
+                <button class="btn btn-info btn-border-radius waves-effect" [disabled]="!secondForm.valid"
+                  awNextStep>Next</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step [stepTitle]="'Business Description'">
+            <ng-template awWizardStepSymbol><i class="fa fa-map-signs"></i>
+            </ng-template>
+            <div class="centered-content">
+              <div>
+                <form #thirdForm="ngForm">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Business Description</mat-label>
+                        <textarea matInput placeholder="Business Description" rows="10" minlength="50"
+                          name="description" [(ngModel)]="business.business_description" #description="ngModel"
+                          required></textarea>
+                        <mat-error *ngIf="!description.valid && (description.dirty || description.touched)">
+                          Enter valid description
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="text-right button-demo">
+                <button class="btn btn-danger btn-border-radius waves-effect" awPreviousStep>previous</button>
+                <button class="btn btn-success btn-border-radius waves-effect" [disabled]="!thirdForm.valid"
+                  (click)="createBusiness()">
+                  Add Business
+                </button>
+              </div>
+            </div>
+          </aw-wizard-step>
+        </aw-wizard>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger waves-effect" #closebutton data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End New Business Modal-->
